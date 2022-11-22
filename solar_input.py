@@ -29,7 +29,7 @@ def read_space_objects_data_from_file(input_filename):
                 objects.append(planet)
             else:
                 print("Unknown space object")
-
+    # print(objects)
     return objects
 
 
@@ -49,14 +49,22 @@ def parse_star_parameters(line, star):
     """
 
     line = line.split()
-    star.R = int(line[1])
+    star.R = float(line[1])
     star.color = line[2]
-    line = list(map(int, line[3:]))
-    star.m = line[3]
-    star.x = line[4]
-    star.y = line[5]
-    star.Vx = line[6]
-    star.Vy = line[7]
+    float_params = []
+    for param in line[3:]:
+        if 'E' in param:
+            idx = param.index('E')
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+        else:
+            float_params.append(float(param))
+    star.m = float_params[0]
+    star.x = float_params[1]
+    star.y = float_params[2]
+    star.Vx = float_params[3]
+    star.Vy = float_params[4]
+    # print(float_params)
+
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -73,7 +81,22 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+    line = line.split()
+    planet.R = float(line[1])
+    planet.color = line[2]
+    float_params = []
+    for param in line[3:]:
+        if 'E' in param:
+            idx = param.index('E')
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+        else:
+            float_params.append(float(param))
+    planet.m = float_params[0]
+    planet.x = float_params[1]
+    planet.y = float_params[2]
+    planet.Vx = float_params[3]
+    planet.Vy = float_params[4]
+    # print(float_params)
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
