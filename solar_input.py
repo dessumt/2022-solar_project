@@ -19,13 +19,17 @@ def read_space_objects_data_from_file(input_filename):
             if len(line.strip()) == 0 or line[0] == '#':
                 continue  # пустые строки и строки-комментарии пропускаем
             object_type = line.split()[0].lower()
-            if object_type == "star":  # FIXME: do the same for planet
+            if object_type == "star":
                 star = Star()
                 parse_star_parameters(line, star)
                 objects.append(star)
+            elif object_type == "planet":
+                planet = Planet()
+                parse_planet_parameters(line, planet)
+                objects.append(planet)
             else:
                 print("Unknown space object")
-
+    # print(objects)
     return objects
 
 
@@ -44,7 +48,23 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
 
-    pass  # FIXME: not done yet
+    line = line.split()
+    star.R = float(line[1])
+    star.color = line[2]
+    float_params = []
+    for param in line[3:]:
+        if 'E' in param:
+            idx = param.index('E')
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+        else:
+            float_params.append(float(param))
+    star.m = float_params[0]
+    star.x = float_params[1]
+    star.y = float_params[2]
+    star.Vx = float_params[3]
+    star.Vy = float_params[4]
+    # print(float_params)
+
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -61,7 +81,22 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+    line = line.split()
+    planet.R = float(line[1])
+    planet.color = line[2]
+    float_params = []
+    for param in line[3:]:
+        if 'E' in param:
+            idx = param.index('E')
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+        else:
+            float_params.append(float(param))
+    planet.m = float_params[0]
+    planet.x = float_params[1]
+    planet.y = float_params[2]
+    planet.Vx = float_params[3]
+    planet.Vy = float_params[4]
+    # print(float_params)
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
