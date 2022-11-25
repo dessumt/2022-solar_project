@@ -55,7 +55,7 @@ def parse_star_parameters(line, star):
     for param in line[3:]:
         if 'E' in param:
             idx = param.index('E')
-            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:]))))
         else:
             float_params.append(float(param))
     star.m = float_params[0]
@@ -88,7 +88,7 @@ def parse_planet_parameters(line, planet):
     for param in line[3:]:
         if 'E' in param:
             idx = param.index('E')
-            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:])))/10**10)
+            float_params.append((float(param[:idx]) * 10**(int(param[idx+1:]))))
         else:
             float_params.append(float(param))
     planet.m = float_params[0]
